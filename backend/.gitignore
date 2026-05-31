@@ -1,0 +1,56 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio / Rider
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.cache
+*.ide
+*.iml
+*.ipr
+*.iws
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# ASP.NET temporary files
+appsettings*.Development.json
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+
+# Publish output
+publish/
+
+# Rider
+.idea/
+
+# Optional VS Code settings
+.vscode/
+
+# Other generated files
+*.DS_Store
+*.class
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.cache
+*.ilk
+*.obj
+*.log
+*.vsix
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
