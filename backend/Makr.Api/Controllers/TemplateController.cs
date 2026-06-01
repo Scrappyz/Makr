@@ -17,9 +17,9 @@ namespace Makr.Api.Controllers
         [HttpPost("init")]
         public IActionResult InitTemplate([FromBody] TemplateInitRequest req)
         {
-            if (_templateService.GetDuplicateVariables(req.Variables).Count > 0)
+            if (_templateService.GetDuplicateParameters(req.Parameters).Count > 0)
             {
-                return BadRequest("Has duplicate variables");
+                return BadRequest("Has duplicate parameters");
             }
 
             return Ok("Good");

@@ -13,6 +13,6 @@ namespace Makr.Application.DTOs.Requests
         public string TemplateId { get; set; }
 
         [DataMember]
-        public TemplateVariable[] Variables { get; set; }
+        public TemplateParameter[] Parameters { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace Makr.Application.Services
     {
 
 
-        public List<string> GetDuplicateVariables(TemplateVariable[] vars)
+        public List<string> GetDuplicateParameters(TemplateParameter[] vars)
         {
-            var groupVars = vars.GroupBy(v => v.Name).ToList();
+            var groupVars = vars.GroupBy(v => v.Key).ToList();
             List<string> result = new List<string>();
 
             foreach (var v in groupVars)
