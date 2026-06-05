@@ -1,0 +1,2 @@
+// Empty placeholder for environment variables
+// This file will be replaced during the build process with the appropriate environment configuration (e.g., development, production) based on the build settings. The actual content of this file is determined by the build tool and should not be modified directly.
