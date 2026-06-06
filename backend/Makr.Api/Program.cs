@@ -1,8 +1,28 @@
+using Makr.Application.Interfaces;
 using Makr.Application.Services;
+using Makr.Infrastructure.Settings;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// ===BIND SETTINGS===
+builder.Services.Configure<TemplateSetting>(
+    builder.Configuration.GetSection("Template")
+);
+
+builder.Services.AddSingleton<ITemplateSetting>(serviceProvider =>
+    serviceProvider.GetRequiredService<IOptions<TemplateSetting>>().Value
+);
+
+builder.Services.Configure<TemplateSetting>(
+    builder.Configuration.GetSection("Template")
+);
+
+builder.Services.AddSingleton<IPostConfigureOptions<TemplateSetting>,
+    TemplateSettingPostConfigure>();
+// ===BIND SETTINGS===
 
 builder.Services.AddControllers();
 

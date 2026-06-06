@@ -1,4 +1,5 @@
 ﻿using Makr.Application.DTOs.Requests;
+using Makr.Application.Interfaces;
 using Makr.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,12 @@ namespace Makr.Api.Controllers
     {
         private readonly TemplateService _templateService;
 
-        public TemplateController(TemplateService templateService)
+        private readonly ITemplateSetting _templateSetting;
+
+        public TemplateController(TemplateService templateService, ITemplateSetting templateSetting)
         {
             _templateService = templateService;
+            _templateSetting = templateSetting;
         }
 
         [HttpPost("init")]
@@ -22,7 +26,7 @@ namespace Makr.Api.Controllers
                 return BadRequest("Has duplicate parameters");
             }
 
-            return Ok("Good");
+            return Ok(_templateSetting.TemplateDirectory);
         }
     }
 }

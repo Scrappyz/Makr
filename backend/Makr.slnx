@@ -2,5 +2,6 @@
   <Project Path="Makr.Api/Makr.Api.csproj" />
   <Project Path="Makr.Application/Makr.Application.csproj" />
   <Project Path="Makr.Domain/Makr.Domain.csproj" />
+  <Project Path="Makr.Infrastructure/Makr.Infrastructure.csproj" Id="03dbb318-b2ef-48cb-9f87-fdf54a6ad0fe" />
   <Project Path="Makr.Persistence/Makr.Persistence.csproj" />
 </Solution>
