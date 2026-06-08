@@ -1,0 +1,283 @@
+{
+  "manifestVersion": 1,
+
+  "metadata": {
+    "name": "Python Project",
+
+    "description": [
+      "Production-ready Python project template.",
+      "Supports optional testing, Docker, GitHub Actions, and documentation."
+    ],
+
+    "tags": [
+      "python",
+      "pytest",
+      "docker",
+      "github-actions"
+    ]
+  },
+
+  "initialization": {
+    "parameters": [ // Declaration
+      {
+        "key": "projectName",
+
+        "name": "Project Name",
+
+        "description": "Name of the generated project.",
+
+        "defaultValue": "my-project",
+
+        "placeholder": "my-awesome-project",
+
+        "required": true,
+
+        "inputType": "text",
+
+        "validation": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+
+          "message": "Only letters, numbers, dashes, and underscores are allowed."
+        }
+      },
+
+      {
+        "key": "packageName",
+
+        "name": "Package Name",
+
+        "description": "Python package name.",
+
+        "defaultValue": "my_project",
+
+        "required": true,
+
+        "inputType": "text"
+      },
+
+      {
+        "key": "database",
+
+        "name": "Database",
+
+        "description": "Database provider.",
+
+        "defaultValue": "postgresql",
+
+        "required": true,
+
+        "inputType": "select",
+
+        "options": [
+          "postgresql",
+          "mysql",
+          "sqlite"
+        ]
+      },
+
+      {
+        "key": "withUnitTests",
+
+        "name": "Include Unit Tests",
+
+        "description": "Include pytest test project.",
+
+        "defaultValue": true,
+
+        "required": true,
+
+        "inputType": "checkbox"
+      },
+
+      {
+        "key": "withDocker",
+
+        "name": "Include Docker",
+
+        "description": "Include Docker support.",
+
+        "defaultValue": false,
+
+        "required": true,
+
+        "inputType": "checkbox"
+      },
+
+      {
+        "key": "withGithubActions",
+
+        "name": "Include GitHub Actions",
+
+        "description": "Include GitHub Actions CI/CD workflows.",
+
+        "defaultValue": false,
+
+        "required": true,
+
+        "inputType": "checkbox"
+      },
+
+      {
+        "key": "dockerImage",
+
+        "name": "Docker Image",
+
+        "defaultValue": "[[projectName]]:latest",
+
+        "hidden": true
+      }
+    ],
+
+    "selection": {
+      "include": [
+        "**/*"
+      ],
+
+      "exclude": [
+        ".git/**",
+        ".makr/**"
+      ]
+    },
+
+    "interpolation": {
+      "prefix": "[[",
+      "suffix": "]$",
+
+      "targets": {
+        "content": {
+          "include": [
+            "src/**/*.py",
+            "README.md",
+            "pyproject.toml"
+          ],
+
+          "exclude": []
+        },
+
+        "filename": {
+          "include": [
+            "**/*"
+          ],
+
+          "exclude": []
+        }
+      }
+    },
+
+    "rules": [
+      {
+        "condition": {
+          "parameter": "withUnitTests",
+          "equals": false
+        },
+
+        "add": {
+          "selection": {
+            "exclude": [
+              "tests/**"
+            ]
+          }
+        }
+      },
+
+      {
+        "condition": {
+          "parameter": "withDocker",
+          "equals": false
+        },
+
+        "add": {
+          "selection": {
+            "exclude": [
+              "Dockerfile",
+              "docker-compose.yml",
+              "docker/**"
+            ]
+          }
+        }
+      },
+
+      {
+        "condition": {
+          "parameter": "withGithubActions",
+          "equals": false
+        },
+
+        "add": {
+          "selection": {
+            "exclude": [
+              ".github/**"
+            ]
+          }
+        }
+      },
+
+      {
+        "condition": {
+          "all": [ // AND
+            {
+              "parameter": "withDocker",
+              "equals": true
+            },
+            {
+              "parameter": "withUnitTests",
+              "equals": true
+            }
+          ]
+        },
+
+        "add": {
+          "interpolation": {
+            "targets": {
+              "content": {
+                "include": [
+                  "tests/**/*.py"
+                ]
+              }
+            }
+          }
+        }
+      },
+
+      {
+        "condition": {
+          "any": [ // OR
+            {
+              "parameter": "database",
+              "equals": "postgresql"
+            },
+            {
+              "parameter": "database",
+              "equals": "mysql"
+            }
+          ]
+        },
+
+        "add": {
+          "selection": {
+            "exclude": [
+              "sqlite/**"
+            ]
+          }
+        }
+      },
+
+      {
+        "condition": {
+          "not": {
+            "parameter": "withGithubActions",
+            "equals": true
+          }
+        },
+
+        "add": {
+          "selection": {
+            "exclude": [
+              ".github/**"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

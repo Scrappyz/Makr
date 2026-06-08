@@ -18,7 +18,7 @@ namespace Makr.Api.Controllers
             _templateSetting = templateSetting;
         }
 
-        [HttpPost("init")]
+        [HttpPost("init")] // template/init
         public IActionResult InitTemplate([FromBody] TemplateInitRequest req)
         {
             if (_templateService.GetDuplicateParameters(req.Parameters).Count > 0)
