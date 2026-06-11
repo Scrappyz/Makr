@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Makr.Application.Services
+namespace Makr.Application.Services.Template
 {
-    public class TemplateService
+    public sealed class TemplateService : ITemplateService
     {
-
-
-        public List<string> GetDuplicateParameters(TemplateParameter[] vars)
+        public List<string> GetDuplicateParameters(List<TemplateParameter> parameters)
         {
-            var groupVars = vars.GroupBy(v => v.Key).ToList();
+            var groupVars = parameters.GroupBy(v => v.Key).ToList();
             List<string> result = new List<string>();
 
             foreach (var v in groupVars)

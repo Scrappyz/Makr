@@ -6,7 +6,7 @@ namespace Makr.Domain.Models
 {
     public class TemplateModifier
     {
-        public List<PathMatch> Selection { get; set; } = new List<PathMatch>();
+        public List<PathSelect> Selection { get; set; } = new List<PathSelect>();
 
         public Interpolation Interpolation { get; set; }
     }

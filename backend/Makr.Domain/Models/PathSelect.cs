@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Makr.Domain.Models
 {
-    public class PathMatch
+    public class PathSelect
     {
         public List<string> include { get; set; } = new List<string>();
 

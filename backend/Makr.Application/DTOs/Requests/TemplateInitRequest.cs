@@ -9,10 +9,10 @@ namespace Makr.Application.DTOs.Requests
     [DataContract]
     public class TemplateInitRequest
     {
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string TemplateId { get; set; }
 
-        [DataMember]
-        public TemplateParameter[] Parameters { get; set; }
+        [DataMember(IsRequired = false)]
+        public List<TemplateParameter> Parameters { get; set; } = new List<TemplateParameter>();
     }
 }

@@ -6,8 +6,8 @@ namespace Makr.Domain.Models
 {
     public class InterpolationTarget
     {
-        public PathMatch content { get; set; } = new PathMatch();
+        public PathSelect content { get; set; } = new PathSelect();
 
-        public PathMatch filename { get; set; } = new PathMatch();
+        public PathSelect filename { get; set; } = new PathSelect();
     }
 }

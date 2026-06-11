@@ -1,6 +1,7 @@
 ﻿using Makr.Application.DTOs.Requests;
 using Makr.Application.Interfaces;
-using Makr.Application.Services;
+using Makr.Application.Pipeline.PathSelector;
+using Makr.Application.Services.Template;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Makr.Api.Controllers
@@ -8,14 +9,17 @@ namespace Makr.Api.Controllers
     [ApiController]
     public class TemplateController : BaseController
     {
-        private readonly TemplateService _templateService;
+        private readonly ITemplateService _templateService;
 
         private readonly ITemplateSetting _templateSetting;
 
-        public TemplateController(TemplateService templateService, ITemplateSetting templateSetting)
+        private readonly IPathSelector _pathSelector;
+
+        public TemplateController(ITemplateService templateService, ITemplateSetting templateSetting, IPathSelector pathSelector)
         {
             _templateService = templateService;
             _templateSetting = templateSetting;
+            _pathSelector = pathSelector;
         }
 
         [HttpPost("init")] // template/init
@@ -27,6 +31,14 @@ namespace Makr.Api.Controllers
             }
 
             return Ok(_templateSetting.TemplateDirectory);
+        }
+
+        [HttpPost("test")]
+        public IActionResult TestAction([FromBody] TemplateInitRequest req)
+        {
+            var paths = _pathSelector.GetPaths(_templateSetting.TemplateDirectory, ["python/**"], ["python/test/**"]);
+            paths = _pathSelector.SortByDepthDescending(paths, '/');
+            return Ok(paths);
         }
     }
 }

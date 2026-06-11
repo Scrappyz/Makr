@@ -1,5 +1,6 @@
 using Makr.Application.Interfaces;
-using Makr.Application.Services;
+using Makr.Application.Pipeline.PathSelector;
+using Makr.Application.Services.Template;
 using Makr.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 
@@ -26,7 +27,10 @@ builder.Services.AddSingleton<IPostConfigureOptions<TemplateSetting>,
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<TemplateService>();
+// ===ADD SERVICES===
+builder.Services.AddScoped<ITemplateService, TemplateService>();
+builder.Services.AddScoped<IPathSelector, PathSelector>();
+// ===ADD SERVICES===
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
