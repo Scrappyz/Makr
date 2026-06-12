@@ -8,6 +8,14 @@ namespace Makr.Domain.Models
     {
         public string Key { get; set; }
 
-        public string Value { get; set; }
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string InputType { get; set; }
+
+        public object? DefaultValue { get; set; }
+
+        public bool Required { get; set; } = false;
     }
 }

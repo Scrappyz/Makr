@@ -8,6 +8,6 @@ namespace Makr.Domain.Models
     {
         public PathSelect content { get; set; } = new PathSelect();
 
-        public PathSelect filename { get; set; } = new PathSelect();
+        public PathSelect path { get; set; } = new PathSelect();
     }
 }

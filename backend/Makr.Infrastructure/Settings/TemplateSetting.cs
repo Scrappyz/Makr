@@ -8,5 +8,7 @@ namespace Makr.Infrastructure.Settings
     public class TemplateSetting : ITemplateSetting
     {
         public string TemplateDirectory { get; set; }
+
+        public string TemplateInitializationDirectory { get; set; }
     }
 }

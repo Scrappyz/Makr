@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Makr.Domain\Makr.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pipeline\Interpolator\" />
-  </ItemGroup>
-
 </Project>

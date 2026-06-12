@@ -1,5 +1,6 @@
 ﻿using Makr.Application.DTOs.Requests;
 using Makr.Application.Interfaces;
+using Makr.Application.Pipeline.Interpolator;
 using Makr.Application.Pipeline.PathSelector;
 using Makr.Application.Services.Template;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,14 @@ namespace Makr.Api.Controllers
 
         private readonly IPathSelector _pathSelector;
 
-        public TemplateController(ITemplateService templateService, ITemplateSetting templateSetting, IPathSelector pathSelector)
+        private readonly IInterpolator _interpolator;
+
+        public TemplateController(ITemplateService templateService, ITemplateSetting templateSetting, IPathSelector pathSelector, IInterpolator interpolator)
         {
             _templateService = templateService;
             _templateSetting = templateSetting;
             _pathSelector = pathSelector;
+            _interpolator = interpolator;
         }
 
         [HttpPost("init")] // template/init
@@ -30,15 +34,17 @@ namespace Makr.Api.Controllers
                 return BadRequest("Has duplicate parameters");
             }
 
+            _templateService.InitializeTemplate(req.TemplateId, req.Parameters.ToDictionary(p => p.Key, p => _interpolator.ToString(p.Value)));
+
             return Ok(_templateSetting.TemplateDirectory);
         }
 
         [HttpPost("test")]
         public IActionResult TestAction([FromBody] TemplateInitRequest req)
         {
-            var paths = _pathSelector.GetPaths(_templateSetting.TemplateDirectory, ["python/**"], ["python/test/**"]);
-            paths = _pathSelector.SortByDepthDescending(paths, '/');
-            return Ok(paths);
+            Dictionary<string, string> parameters = req.Parameters.ToDictionary(p => p.Key, p => _interpolator.ToString(p.Value));
+            string str = _interpolator.Interpolate("Hello, ({name})! I am at ({place}) and is ({age}) years old.", "({", "})", parameters);
+            return Ok(str);
         }
     }
 }

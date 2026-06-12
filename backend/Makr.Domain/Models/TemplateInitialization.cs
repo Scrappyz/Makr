@@ -6,7 +6,7 @@ namespace Makr.Domain.Models
 {
     public class TemplateInitialization
     {
-        public List<TemplateParameter> Parameters { get; set; } = new List<TemplateParameter>();
+        public List<TemplateParameterRequest> Parameters { get; set; } = new List<TemplateParameterRequest>();
 
         public List<PathSelect> Selection { get; set; } = new List<PathSelect>();
 

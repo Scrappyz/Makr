@@ -19,6 +19,6 @@ namespace Makr.Application.DTOs.Responses
         public string TemplateAuthor { get; set; }
 
         [DataMember]
-        public TemplateParameterInfo[] TemplateParameters { get; set; }
+        public TemplateParameter[] TemplateParameters { get; set; }
     }
 }

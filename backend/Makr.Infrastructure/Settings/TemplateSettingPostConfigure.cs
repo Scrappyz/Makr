@@ -21,6 +21,7 @@ namespace Makr.Infrastructure.Settings
 
             // To make sure the path is absolute
             settings.TemplateDirectory = ResolveAbsolutePath(settings.TemplateDirectory);
+            settings.TemplateInitializationDirectory = ResolveAbsolutePath(settings.TemplateInitializationDirectory);
         }
 
         private string ResolveAbsolutePath(string path)

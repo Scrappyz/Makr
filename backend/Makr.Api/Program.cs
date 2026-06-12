@@ -1,4 +1,5 @@
 using Makr.Application.Interfaces;
+using Makr.Application.Pipeline.Interpolator;
 using Makr.Application.Pipeline.PathSelector;
 using Makr.Application.Services.Template;
 using Makr.Infrastructure.Settings;
@@ -30,6 +31,7 @@ builder.Services.AddControllers();
 // ===ADD SERVICES===
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IPathSelector, PathSelector>();
+builder.Services.AddScoped<IInterpolator, Interpolator>();
 // ===ADD SERVICES===
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

@@ -7,5 +7,7 @@ namespace Makr.Application.Interfaces
     public interface ITemplateSetting
     {
         string TemplateDirectory { get; }
+
+        string TemplateInitializationDirectory { get; }
     }
 }
