@@ -3,6 +3,7 @@ using Makr.Application.Interfaces;
 using Makr.Application.Pipeline.Interpolator;
 using Makr.Application.Pipeline.PathSelector;
 using Makr.Application.Services.Template;
+using Makr.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Makr.Api.Controllers
@@ -29,12 +30,13 @@ namespace Makr.Api.Controllers
         [HttpPost("init")] // template/init
         public IActionResult InitTemplate([FromBody] TemplateInitRequest req)
         {
-            if (_templateService.GetDuplicateParameters(req.Parameters).Count > 0)
+            List<ParameterKeyValue> parameters = _templateService.TransformParameterRequest(req.Parameters);
+            if (_templateService.GetDuplicateParameters(parameters).Count > 0)
             {
                 return BadRequest("Has duplicate parameters");
             }
 
-            _templateService.InitializeTemplate(req.TemplateId, req.Parameters.ToDictionary(p => p.Key, p => _interpolator.ToString(p.Value)));
+            _templateService.InitializeTemplate(req.TemplateId, parameters);
 
             return Ok(_templateSetting.TemplateDirectory);
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Makr.Domain.Models
+﻿namespace Makr.Domain.Models.Template
 {
     public class PathSelect
     {

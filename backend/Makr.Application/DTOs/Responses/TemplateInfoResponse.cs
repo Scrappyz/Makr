@@ -1,4 +1,4 @@
-﻿using Makr.Domain.Models;
+﻿using Makr.Domain.Models.Template;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Makr.Domain.Models
+﻿namespace Makr.Domain.Models.Template
 {
     public class TemplateRule
     {
-        public TemplateCondition Condition { get; set; }
+        public required TemplateCondition Condition { get; set; }
 
         public TemplateModifier Add { get; set; }
 

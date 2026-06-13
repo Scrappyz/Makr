@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Makr.Domain.Models
+﻿namespace Makr.Domain.Models.Template
 {
     public class TemplateParameter
     {
-        public string Key { get; set; }
+        public required string Key { get; set; }
 
         public string Name { get; set; }
 
@@ -17,5 +13,7 @@ namespace Makr.Domain.Models
         public object? DefaultValue { get; set; }
 
         public bool Required { get; set; } = false;
+
+        public bool Interpolate { get; set; }
     }
 }
