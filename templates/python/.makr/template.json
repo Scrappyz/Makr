@@ -83,7 +83,7 @@
       {
         "condition": {
           "parameter": "withUnitTests",
-          "equals": false
+          "equals": true
         },
 
         "add": {
@@ -92,6 +92,28 @@
               "tests/**"
             ]
           }
+        }
+      },
+      {
+        "condition": {
+          "all": [
+            {
+              "parameter": "withUnitTests",
+              "equals": false
+            },
+            {
+              "any": [
+                {
+                  "parameter": "project",
+                  "equals": "python"
+                },
+                {
+                  "parameter": "author",
+                  "equals": "John Doe"
+                }
+              ]
+            }
+          ]
         }
       }
     ]

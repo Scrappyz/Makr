@@ -1,6 +1,7 @@
 ﻿using Makr.Application.Interfaces;
 using Makr.Application.Pipeline.Interpolator;
 using Makr.Application.Pipeline.PathSelector;
+using Makr.Application.Pipeline.RuleEvaluator;
 using Makr.Domain.Helpers;
 using Makr.Domain.Models;
 using Makr.Domain.Models.Template;
@@ -13,12 +14,14 @@ namespace Makr.Application.Services.Template
         private readonly ITemplateSetting _templateSetting;
         private readonly IInterpolator _interpolator;
         private readonly IPathSelector _pathSelector;
+        private readonly IRuleEvaluator _ruleEvaluator;
 
-        public TemplateService(ITemplateSetting templateSetting, IInterpolator interpolator, IPathSelector pathSelector)
+        public TemplateService(ITemplateSetting templateSetting, IInterpolator interpolator, IPathSelector pathSelector, IRuleEvaluator ruleEvaluator)
         {
             _templateSetting = templateSetting;
             _interpolator = interpolator;
             _pathSelector = pathSelector;
+            _ruleEvaluator = ruleEvaluator;
         }
 
         public void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters, bool force)
@@ -46,6 +49,10 @@ namespace Makr.Application.Services.Template
             List<string> templatePaths = paths.Select(p => Path.GetFullPath(Path.Combine(templatePath, p))).ToList();
             List<string> initPaths = paths.Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList();
             #endregion
+
+            //bool result = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[0].Condition, parameters);
+            //bool result2 = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[1].Condition, parameters);
+            //return;
 
             #region Copy template files to initialization directory
             if (force)
