@@ -20,5 +20,7 @@ namespace Makr.Application.Pipeline.Interpolator
         Regex CreateInterpolationRegex(string prefix, string suffix, IEnumerable<string> keys);
 
         Regex CreateInterpolationRegex(string prefix, string suffix, List<string> keys);
+
+        bool IsValidPrefixSuffix(string prefix, string suffix);
     }
 }

@@ -48,20 +48,19 @@
       ],
 
       "exclude": [
+        ".makr",
         ".makr/**"
       ]
     },
 
     "interpolation": {
-      "prefix": "[[",
-      "suffix": "]]",
+      "prefix": "!",
+      "suffix": "!",
 
       "targets": {
         "content": {
           "include": [
-            "src/**/*.py",
-            "README.md",
-            "pyproject.toml"
+            "!project!/**/*.py"
           ],
 
           "exclude": [
@@ -71,6 +70,7 @@
 
         "path": {
           "include": [
+            "!project!",
             "!project!/**"
           ],
 

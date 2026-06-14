@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Makr.Domain.Helpers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -22,6 +23,11 @@ namespace Makr.Infrastructure.Settings
             // To make sure the path is absolute
             settings.TemplateDirectory = ResolveAbsolutePath(settings.TemplateDirectory);
             settings.TemplateInitializationDirectory = ResolveAbsolutePath(settings.TemplateInitializationDirectory);
+
+            if (!FilesystemUtils.Exists(settings.TemplateInitializationDirectory))
+            {
+                Directory.CreateDirectory(settings.TemplateInitializationDirectory);
+            }
         }
 
         private string ResolveAbsolutePath(string path)

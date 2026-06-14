@@ -36,7 +36,7 @@ namespace Makr.Api.Controllers
                 return BadRequest("Has duplicate parameters");
             }
 
-            _templateService.InitializeTemplate(req.TemplateId, parameters);
+            _templateService.InitializeTemplate(req.TemplateId, parameters, true);
 
             return Ok(_templateSetting.TemplateDirectory);
         }

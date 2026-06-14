@@ -21,8 +21,9 @@ namespace Makr.Application.Services.Template
             _pathSelector = pathSelector;
         }
 
-        public void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters)
+        public void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters, bool force)
         {
+            #region Declare variables
             string templatePath = Path.GetFullPath(Path.Combine(_templateSetting.TemplateDirectory, templateId));
             string initPath = Path.GetFullPath(_templateSetting.TemplateInitializationDirectory);
 
@@ -38,23 +39,53 @@ namespace Makr.Application.Services.Template
 
             parameters = SetParameterValues(parameters, config.Initialization.Parameters);
 
-            List<string> paths = _pathSelector.SortByDepth(_pathSelector.GetPaths(templatePath, ["**/*"], []), '/');
+            List<string> paths = _pathSelector.SortByDepth(
+                _pathSelector.GetPaths(templatePath, config.Initialization.Selection.include, config.Initialization.Selection.exclude)
+            );
 
             List<string> templatePaths = paths.Select(p => Path.GetFullPath(Path.Combine(templatePath, p))).ToList();
             List<string> initPaths = paths.Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList();
+            #endregion
 
-            FilesystemUtils.EmptyDirectory(initPath);
+            #region Copy template files to initialization directory
+            if (force)
+            {
+                FilesystemUtils.EmptyDirectory(initPath);
+            }
+            else if (Directory.Exists(initPath) && Directory.EnumerateFileSystemEntries(initPath).Any())
+            {
+                throw new Exception($"Initialization directory '{initPath}' is not empty. Use force option to overwrite.");
+            }
 
             for (int i = 0; i < paths.Count; i++)
             {
                 FilesystemUtils.Copy(templatePaths[i], initPaths[i], true);
             }
+            #endregion
 
+            #region Interpolate files in initialization directory
             Dictionary<string, string> parameterInterpolation = GetInterpolationParameters(parameters, config.Initialization.Parameters)
                                                                 .ToDictionary(p => p.Key, p => _interpolator.ToString(p.Value));
 
-            _interpolator.InterpolateContents(initPaths, "!", "!", parameterInterpolation);
-            _interpolator.InterpolatePaths(initPaths, "!", "!", parameterInterpolation);
+            InterpolationTarget interpolationTarget = config.Initialization.Interpolation.Targets;
+            List<string> contentInterpolationPaths = _pathSelector.FilterPaths(paths, interpolationTarget.Content.include, interpolationTarget.Content.exclude)
+                                                    .Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList();
+            List<string> pathInterpolationPaths = _pathSelector.SortByDepthDescending(
+                                                    _pathSelector.FilterPaths(paths, interpolationTarget.Path.include, interpolationTarget.Path.exclude)
+                                                    .Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList()
+                                                  );
+
+            string interpolationPrefix = config.Initialization.Interpolation.Prefix;
+            string interpolationSuffix = config.Initialization.Interpolation.Suffix;
+
+            _interpolator.InterpolateContents(contentInterpolationPaths, interpolationPrefix, interpolationSuffix, parameterInterpolation);
+            _interpolator.InterpolatePaths(pathInterpolationPaths, interpolationPrefix, interpolationSuffix, parameterInterpolation);
+            #endregion
+        }
+
+        public void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters)
+        {
+            InitializeTemplate(templateId, parameters, false);
         }
 
         public List<string> GetDuplicateParameters(List<ParameterKeyValue> parameters)

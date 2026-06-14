@@ -20,7 +20,7 @@ namespace Makr.Application.Pipeline.Interpolator
 
         public string Interpolate(string str, string prefix, string suffix, Dictionary<string, string> parameters)
         {
-            if (parameters.Count == 0) 
+            if (string.IsNullOrEmpty(str) || !IsValidPrefixSuffix(prefix, suffix) || parameters.Count == 0)
                 return str;
 
             Regex regex = CreateInterpolationRegex(prefix, suffix, parameters.Keys);
@@ -30,20 +30,19 @@ namespace Makr.Application.Pipeline.Interpolator
 
         public string Interpolate(string str, string prefix, string suffix, Dictionary<string, string> parameters, Regex regex)
         {
-            if (parameters.Count == 0) 
+            if (string.IsNullOrEmpty(str) || !IsValidPrefixSuffix(prefix, suffix) || parameters.Count == 0)
                 return str;
 
             return regex.Replace(str, match => parameters[RemovePrefixSuffix(match.Value, prefix, suffix)]);
         }
 
+        // Paths must be absolute
         public void InterpolateContents(List<string> paths, string prefix, string suffix, Dictionary<string, string> parameters)
         {
-            if (paths.Count == 0 || 
-                string.IsNullOrEmpty(prefix) || 
-                string.IsNullOrEmpty(suffix) ||
-                parameters.Count == 0
-            )
+            if (paths.Count == 0 || !IsValidPrefixSuffix(prefix, suffix) || parameters.Count == 0)
                 return;
+
+            paths = paths.Distinct().ToList();
 
             Regex regex = CreateInterpolationRegex(prefix, suffix, parameters.Keys);
 
@@ -66,16 +65,13 @@ namespace Makr.Application.Pipeline.Interpolator
             }
         }
 
+        // Paths must be absolute
         public void InterpolatePaths(List<string> paths, string prefix, string suffix, Dictionary<string, string> parameters)
         {
-            if (paths.Count == 0 || 
-                string.IsNullOrEmpty(prefix) || 
-                string.IsNullOrEmpty(suffix) ||
-                parameters.Count == 0
-            )
+            if (paths.Count == 0 || !IsValidPrefixSuffix(prefix, suffix) || parameters.Count == 0)
                 return;
 
-            paths = _pathSelector.SortByDepthDescending(paths);
+            paths = _pathSelector.SortByDepthDescending(paths.Distinct().ToList());
 
             Regex regex = CreateInterpolationRegex(prefix, suffix, parameters.Keys);
 
@@ -134,6 +130,14 @@ namespace Makr.Application.Pipeline.Interpolator
                 return str[(prefix.Length)..(str.Length - suffix.Length)];
             }
             return str;
+        }
+
+        public bool IsValidPrefixSuffix(string prefix, string suffix)
+        {
+            if (string.IsNullOrWhiteSpace(prefix) || string.IsNullOrWhiteSpace(suffix))
+                return false;
+
+            return true;
         }
     }
 }

@@ -2,10 +2,10 @@
 {
     public class Interpolation
     {
-        public string prefix { get; set; }
+        public string Prefix { get; set; }
 
-        public string suffix { get; set; }
+        public string Suffix { get; set; }
 
-        public InterpolationTarget targets { get; set; }
+        public InterpolationTarget Targets { get; set; }
     }
 }
