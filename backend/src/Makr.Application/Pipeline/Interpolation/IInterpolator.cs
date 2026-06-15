@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Makr.Application.Pipeline.Interpolator
+namespace Makr.Application.Pipeline.Interpolation
 {
     public interface IInterpolator
     {

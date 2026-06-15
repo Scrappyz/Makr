@@ -1,7 +1,7 @@
 ﻿using Makr.Application.Interfaces;
-using Makr.Application.Pipeline.Interpolator;
-using Makr.Application.Pipeline.PathSelector;
-using Makr.Application.Pipeline.RuleEvaluator;
+using Makr.Application.Pipeline.Interpolation;
+using Makr.Application.Pipeline.PathSelection;
+using Makr.Application.Pipeline.RuleEvaluation;
 using Makr.Domain.Helpers;
 using Makr.Domain.Models;
 using Makr.Domain.Models.Template;

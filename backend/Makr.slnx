@@ -1,7 +1,12 @@
 <Solution>
-  <Project Path="Makr.Api/Makr.Api.csproj" />
-  <Project Path="Makr.Application/Makr.Application.csproj" />
-  <Project Path="Makr.Domain/Makr.Domain.csproj" />
-  <Project Path="Makr.Infrastructure/Makr.Infrastructure.csproj" Id="03dbb318-b2ef-48cb-9f87-fdf54a6ad0fe" />
-  <Project Path="Makr.Persistence/Makr.Persistence.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/Makr.Api/Makr.Api.csproj" />
+    <Project Path="src/Makr.Application/Makr.Application.csproj" />
+    <Project Path="src/Makr.Domain/Makr.Domain.csproj" />
+    <Project Path="src/Makr.Infrastructure/Makr.Infrastructure.csproj" Id="03dbb318-b2ef-48cb-9f87-fdf54a6ad0fe" />
+    <Project Path="src/Makr.Persistence/Makr.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Makr.Application.Test/Makr.Application.Test.csproj" Id="127a825b-beb6-4c47-8b79-f6ac6d6aef18" />
+  </Folder>
 </Solution>

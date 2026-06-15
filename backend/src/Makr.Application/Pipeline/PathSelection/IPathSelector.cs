@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Makr.Application.Pipeline.PathSelector
+namespace Makr.Application.Pipeline.PathSelection
 {
     public interface IPathSelector
     {

@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 
-namespace Makr.Application.Pipeline.PathSelector
+namespace Makr.Application.Pipeline.PathSelection
 {
     public sealed class PathSelector : IPathSelector
     {

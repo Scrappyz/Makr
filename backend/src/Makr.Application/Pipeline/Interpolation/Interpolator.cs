@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Makr.Domain.Helpers;
-using Makr.Application.Pipeline.PathSelector;
+using Makr.Application.Pipeline.PathSelection;
 
-namespace Makr.Application.Pipeline.Interpolator
+namespace Makr.Application.Pipeline.Interpolation
 {
     public sealed class Interpolator : IInterpolator
     {

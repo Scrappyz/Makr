@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
-namespace Makr.Application.Pipeline.RuleEvaluator
+namespace Makr.Application.Pipeline.RuleEvaluation
 {
     public sealed class RuleEvaluator : IRuleEvaluator
     {

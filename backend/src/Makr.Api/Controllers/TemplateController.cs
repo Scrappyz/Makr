@@ -1,7 +1,7 @@
 ﻿using Makr.Application.DTOs.Requests;
 using Makr.Application.Interfaces;
-using Makr.Application.Pipeline.Interpolator;
-using Makr.Application.Pipeline.PathSelector;
+using Makr.Application.Pipeline.Interpolation;
+using Makr.Application.Pipeline.PathSelection;
 using Makr.Application.Services.Template;
 using Makr.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
