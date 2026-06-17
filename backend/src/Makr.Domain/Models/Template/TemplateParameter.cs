@@ -1,4 +1,6 @@
-﻿namespace Makr.Domain.Models.Template
+﻿using Makr.Domain.Helpers;
+
+namespace Makr.Domain.Models.Template
 {
     public class TemplateParameter
     {
@@ -10,10 +12,17 @@
 
         public string InputType { get; set; }
 
-        public object? DefaultValue { get; set; }
+        public object? DefaultValue
+        {
+            get => _defaultValue;
+            set => _defaultValue = JsonUtils.UnwrapJsonElement(value);
+        }
 
         public bool Required { get; set; } = false;
 
         public bool Interpolate { get; set; }
+
+        // Temporary fields
+        private object? _defaultValue;
     }
 }

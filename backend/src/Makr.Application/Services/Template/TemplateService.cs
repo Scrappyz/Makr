@@ -50,9 +50,9 @@ namespace Makr.Application.Services.Template
             List<string> initPaths = paths.Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList();
             #endregion
 
-            //bool result = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[0].Condition, parameters);
-            //bool result2 = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[1].Condition, parameters);
-            //return;
+            bool result = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[0].If, parameters);
+            bool result2 = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[1].If, parameters);
+            return;
 
             #region Copy template files to initialization directory
             if (force)

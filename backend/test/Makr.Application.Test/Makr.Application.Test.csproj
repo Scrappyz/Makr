@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Makr.Application\Makr.Application.csproj" />
+    <ProjectReference Include="..\..\src\Makr.Domain\Makr.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -28,7 +28,7 @@ namespace Makr.Application.Test.Pipeline.Interpolation
 
         [Theory]
         [MemberData(nameof(InterpolationTestCases))]
-        public void Interpolate_ValidOutput(string input, string prefix, string suffix, Dictionary<string, string> parameters, string expected)
+        public void Interpolate_Basic_ValidOutput(string input, string prefix, string suffix, Dictionary<string, string> parameters, string expected)
         {
             // Arrange
             PathSelector pathSelector = new PathSelector(); // or provide a test double implementing IPathSelector

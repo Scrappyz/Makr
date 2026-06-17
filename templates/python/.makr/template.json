@@ -39,6 +39,10 @@
         "description": "Whether to include unit testing setup with pytest.",
         "defaultValue": true,
         "interpolate": false
+      },
+      {
+        "key": "someNumber",
+        "name": "A number"
       }
     ],
 
@@ -81,21 +85,23 @@
 
     "rules": [
       {
-        "condition": {
-          "parameter": "withUnitTests",
-          "equals": true
+        "if": {
+          "parameter": "someNumber",
+          "notEquals": 5
         },
 
-        "add": {
-          "selection": {
-            "exclude": [
-              "tests/**"
-            ]
+        "then": {
+          "add": {
+            "selection": {
+              "exclude": [
+                "tests/**"
+              ]
+            }
           }
         }
       },
       {
-        "condition": {
+        "if": {
           "all": [
             {
               "parameter": "withUnitTests",
@@ -110,6 +116,10 @@
                 {
                   "parameter": "author",
                   "equals": "John Doe"
+                },
+                {
+                  "parameter": "someNumber",
+                  "notEquals": 5
                 }
               ]
             }

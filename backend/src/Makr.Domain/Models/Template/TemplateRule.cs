@@ -2,12 +2,8 @@
 {
     public class TemplateRule
     {
-        public required TemplateCondition Condition { get; set; }
+        public required TemplateCondition If { get; set; }
 
-        public TemplateModifier Add { get; set; }
-
-        public TemplateModifier Remove { get; set; }
-
-        public TemplateModifier Replace { get; set; }
+        public TemplateModifierGroup Then { get; set; }
     }
 }

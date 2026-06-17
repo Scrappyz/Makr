@@ -1,4 +1,5 @@
-﻿using Makr.Domain.Models;
+﻿using Makr.Domain.Helpers;
+using Makr.Domain.Models;
 using Makr.Domain.Models.Template;
 using System;
 using System.Collections.Generic;
@@ -13,21 +14,26 @@ namespace Makr.Application.Pipeline.RuleEvaluation
         {
             Dictionary<string, object?> parameterMap = parameters.ToDictionary(p => p.Key, p => p.Value);
 
+            return EvaluateCondition(condition, parameterMap);
+        }
+
+        public bool EvaluateCondition(TemplateCondition condition, Dictionary<string, object?> parameters)
+        {
             bool hasAll = condition.All.Count > 0;
             bool hasAny = condition.Any.Count > 0;
             bool hasSingle = !string.IsNullOrWhiteSpace(condition.Parameter);
 
             if (hasSingle)
             {
-                return EvaluateSingleCondition(condition, parameterMap);
+                return EvaluateSingleCondition(condition, parameters);
             }
             else if (hasAll)
             {
-                return EvaluateAllConditions(condition.All, parameterMap);
+                return EvaluateAllConditions(condition.All, parameters);
             }
             else if (hasAny)
             {
-                return EvaluateAnyConditions(condition.Any, parameterMap);
+                return EvaluateAnyConditions(condition.Any, parameters);
             }
 
             return false;
@@ -38,15 +44,15 @@ namespace Makr.Application.Pipeline.RuleEvaluation
             if (!parameters.ContainsKey(condition.Parameter))
                 return false;
 
-            var actualValue = UnwrapJsonElement(parameters[condition.Parameter]);
-            var expectedEquals = UnwrapJsonElement(condition.Equals);
-            var expectedNotEquals = UnwrapJsonElement(condition.NotEquals);
+            var actualValue = parameters[condition.Parameter];
+            var expectedEquals = condition.Equals;
+            var expectedNotEquals = condition.NotEquals;
 
             if (expectedEquals != null)
-                return Equals(expectedEquals, actualValue);
+                return actualValue.Equals(expectedEquals);
 
             if (expectedNotEquals != null)
-                return !Equals(expectedNotEquals, actualValue);
+                return !actualValue.Equals(expectedNotEquals);
 
             return false;
         }
@@ -110,23 +116,6 @@ namespace Makr.Application.Pipeline.RuleEvaluation
             }
 
             return results;
-        }
-
-        private object? UnwrapJsonElement(object? value)
-        {
-            if (value is JsonElement element)
-            {
-                return element.ValueKind switch
-                {
-                    JsonValueKind.String => element.GetString(),  // ← THIS line fixes your case
-                    JsonValueKind.True => true,
-                    JsonValueKind.False => false,
-                    JsonValueKind.Number => element.GetDouble(),
-                    JsonValueKind.Null => null,
-                    _ => value
-                };
-            }
-            return value;
         }
     }
 }
