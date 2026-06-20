@@ -6,7 +6,7 @@
 
         public PathSelect Selection { get; set; }
 
-        public Interpolation Interpolation { get; set; }
+        public TemplateInterpolation Interpolation { get; set; }
 
         public List<TemplateRule> Rules { get; set; } = new List<TemplateRule>();
     }

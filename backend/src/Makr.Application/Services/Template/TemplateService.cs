@@ -42,6 +42,9 @@ namespace Makr.Application.Services.Template
 
             parameters = SetParameterValues(parameters, config.Initialization.Parameters);
 
+            // Modify config via rules
+            _ruleEvaluator.ResolveRules(config.Initialization, config.Initialization.Rules, parameters);
+
             List<string> paths = _pathSelector.SortByDepth(
                 _pathSelector.GetPaths(templatePath, config.Initialization.Selection.include, config.Initialization.Selection.exclude)
             );
@@ -49,10 +52,6 @@ namespace Makr.Application.Services.Template
             List<string> templatePaths = paths.Select(p => Path.GetFullPath(Path.Combine(templatePath, p))).ToList();
             List<string> initPaths = paths.Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList();
             #endregion
-
-            bool result = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[0].If, parameters);
-            bool result2 = _ruleEvaluator.EvaluateCondition(config.Initialization.Rules[1].If, parameters);
-            return;
 
             #region Copy template files to initialization directory
             if (force)
@@ -74,11 +73,11 @@ namespace Makr.Application.Services.Template
             Dictionary<string, string> parameterInterpolation = GetInterpolationParameters(parameters, config.Initialization.Parameters)
                                                                 .ToDictionary(p => p.Key, p => _interpolator.ToString(p.Value));
 
-            InterpolationTarget interpolationTarget = config.Initialization.Interpolation.Targets;
-            List<string> contentInterpolationPaths = _pathSelector.FilterPaths(paths, interpolationTarget.Content.include, interpolationTarget.Content.exclude)
+            TemplateInterpolationTarget interpolationTarget = config.Initialization.Interpolation.Targets;
+            List<string> contentInterpolationPaths = _pathSelector.FilterPaths(paths, interpolationTarget.Contents.include, interpolationTarget.Contents.exclude)
                                                     .Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList();
-            List<string> pathInterpolationPaths = _pathSelector.SortByDepthDescending(
-                                                    _pathSelector.FilterPaths(paths, interpolationTarget.Path.include, interpolationTarget.Path.exclude)
+            List<string> filenameInterpolationPaths = _pathSelector.SortByDepthDescending(
+                                                    _pathSelector.FilterPaths(paths, interpolationTarget.Filenames.include, interpolationTarget.Filenames.exclude)
                                                     .Select(p => Path.GetFullPath(Path.Combine(initPath, p))).ToList()
                                                   );
 
@@ -86,7 +85,7 @@ namespace Makr.Application.Services.Template
             string interpolationSuffix = config.Initialization.Interpolation.Suffix;
 
             _interpolator.InterpolateContents(contentInterpolationPaths, interpolationPrefix, interpolationSuffix, parameterInterpolation);
-            _interpolator.InterpolatePaths(pathInterpolationPaths, interpolationPrefix, interpolationSuffix, parameterInterpolation);
+            _interpolator.InterpolatePaths(filenameInterpolationPaths, interpolationPrefix, interpolationSuffix, parameterInterpolation);
             #endregion
         }
 

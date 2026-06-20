@@ -39,10 +39,6 @@
         "description": "Whether to include unit testing setup with pytest.",
         "defaultValue": true,
         "interpolate": false
-      },
-      {
-        "key": "someNumber",
-        "name": "A number"
       }
     ],
 
@@ -62,7 +58,7 @@
       "suffix": "!",
 
       "targets": {
-        "content": {
+        "contents": {
           "include": [
             "!project!/**/*.py"
           ],
@@ -72,10 +68,11 @@
           ]
         },
 
-        "path": {
+        "filenames": {
           "include": [
             "!project!",
-            "!project!/**"
+            "!project!/**",
+            "test/**"
           ],
 
           "exclude": []
@@ -86,44 +83,19 @@
     "rules": [
       {
         "if": {
-          "parameter": "someNumber",
-          "notEquals": 5
+          "parameter": "withUnitTests",
+          "equals": false
         },
 
         "then": {
           "add": {
             "selection": {
               "exclude": [
-                "tests/**"
+                "test/**",
+                "test"
               ]
             }
           }
-        }
-      },
-      {
-        "if": {
-          "all": [
-            {
-              "parameter": "withUnitTests",
-              "equals": false
-            },
-            {
-              "any": [
-                {
-                  "parameter": "project",
-                  "equals": "python"
-                },
-                {
-                  "parameter": "author",
-                  "equals": "John Doe"
-                },
-                {
-                  "parameter": "someNumber",
-                  "notEquals": 5
-                }
-              ]
-            }
-          ]
         }
       }
     ]

@@ -4,6 +4,6 @@
     {
         public PathSelect Selection { get; set; }
 
-        public Interpolation Interpolation { get; set; }
+        public TemplateInterpolation Interpolation { get; set; }
     }
 }
