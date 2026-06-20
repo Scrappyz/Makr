@@ -18,13 +18,29 @@ namespace Makr.Domain.Models.Template
             set => _notEquals = JsonUtils.UnwrapJsonElement(value);
         }
 
-        public object? GreaterThan { get; set; }
+        public object? GreaterThan
+        {
+            get => _greaterThan;
+            set => _greaterThan = JsonUtils.UnwrapJsonElement(value);
+        }
 
-        public object? LessThan { get; set; }
+        public object? LessThan
+        {
+            get => _lessThan;
+            set => _lessThan = JsonUtils.UnwrapJsonElement(value);
+        }
 
-        public object? GreaterThanOrEqual { get; set; }
+        public object? GreaterThanOrEqual
+        {
+            get => _greaterThanOrEqual;
+            set => _greaterThanOrEqual = JsonUtils.UnwrapJsonElement(value);
+        }
 
-        public object? LessThanOrEqual { get; set; }
+        public object? LessThanOrEqual
+        {
+            get => _lessThanOrEqual;
+            set => _lessThanOrEqual = JsonUtils.UnwrapJsonElement(value);
+        }
 
         // Recursive conditions for nested parameters
         public List<TemplateCondition> All { get; set; } = new List<TemplateCondition>();
@@ -34,5 +50,9 @@ namespace Makr.Domain.Models.Template
         // Temporary fields
         private object? _equals;
         private object? _notEquals;
+        private object? _greaterThan;
+        private object? _lessThan;
+        private object? _greaterThanOrEqual;
+        private object? _lessThanOrEqual;
     }
 }
