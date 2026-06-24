@@ -2,10 +2,13 @@
 using Makr.Application.Pipeline.Interpolation;
 using Makr.Application.Pipeline.PathSelection;
 using Makr.Application.Pipeline.RuleEvaluation;
+using Makr.Domain.Constants;
+using Makr.Domain.Exceptions;
 using Makr.Domain.Helpers;
 using Makr.Domain.Models;
 using Makr.Domain.Models.Template;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Makr.Application.Services.Template
 {
@@ -31,6 +34,12 @@ namespace Makr.Application.Services.Template
             string initPath = Path.GetFullPath(_templateSetting.TemplateInitializationDirectory);
 
             string templateJsonPath = Path.Combine(templatePath, ".makr", "template.json");
+
+            if (!FilesystemUtils.Exists(templateJsonPath))
+            {
+                throw new ApiException(StatusCodes.Status404NotFound, ErrorCode.Template.NotFound, $"Template with ID `{templateId}` cannot be found");
+            }
+            
             string templateJsonContent = File.ReadAllText(templateJsonPath);
 
             var options = new JsonSerializerOptions
@@ -92,6 +101,13 @@ namespace Makr.Application.Services.Template
         public void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters)
         {
             InitializeTemplate(templateId, parameters, false);
+        }
+
+        public bool TemplateExists(string templateId)
+        {
+            string templatePath = Path.GetFullPath(Path.Combine(_templateSetting.TemplateDirectory, templateId));
+            string templateJsonPath = Path.Combine(templatePath, ".makr", "template.json");
+            return FilesystemUtils.Exists(templateJsonPath);
         }
 
         public List<string> GetDuplicateParameters(List<ParameterKeyValue> parameters)

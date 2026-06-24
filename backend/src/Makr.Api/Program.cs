@@ -1,3 +1,4 @@
+using Makr.Api.Middleware;
 using Makr.Application.Interfaces;
 using Makr.Application.Pipeline.Interpolation;
 using Makr.Application.Pipeline.PathSelection;
@@ -7,6 +8,10 @@ using Makr.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add exception handler
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(); // needed alongside AddExceptionHandler
 
 // Add services to the container.
 
@@ -51,6 +56,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

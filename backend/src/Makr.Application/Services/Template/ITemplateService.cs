@@ -12,6 +12,8 @@ namespace Makr.Application.Services.Template
 
         void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters);
 
+        bool TemplateExists(string templateId);
+
         List<string> GetDuplicateParameters(List<ParameterKeyValue> parameters);
 
         List<ParameterKeyValue> TransformParameterRequest(List<TemplateParameterRequest> parameters);

@@ -3,6 +3,8 @@ using Makr.Application.Interfaces;
 using Makr.Application.Pipeline.Interpolation;
 using Makr.Application.Pipeline.PathSelection;
 using Makr.Application.Services.Template;
+using Makr.Domain.Constants;
+using Makr.Domain.Exceptions;
 using Makr.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +30,7 @@ namespace Makr.Api.Controllers
         }
 
         [HttpPost("init")] // template/init
-        public IActionResult InitTemplate([FromBody] TemplateInitRequest req)
+        public async Task<IActionResult> InitTemplate([FromBody] TemplateInitRequest req)
         {
             List<ParameterKeyValue> parameters = _templateService.TransformParameterRequest(req.Parameters);
             if (_templateService.GetDuplicateParameters(parameters).Count > 0)
@@ -41,8 +43,21 @@ namespace Makr.Api.Controllers
             return Ok(_templateSetting.TemplateDirectory);
         }
 
+        [HttpPost("info/{id}")]
+        public async Task<IActionResult> GetTemplateInfo(string id)
+        {
+            bool templateExists = _templateService.TemplateExists(id);
+
+            if (!templateExists)
+            {
+                throw new ApiException(StatusCodes.Status404NotFound, ErrorCode.Template.NotFound, $"Template with ID `{id}` cannot be found");
+            }
+
+            return Ok("cool");
+        }
+
         [HttpPost("test")]
-        public IActionResult TestAction([FromBody] TemplateInitRequest req)
+        public async Task<IActionResult> TestAction([FromBody] TemplateInitRequest req)
         {
             Dictionary<string, string> parameters = req.Parameters.ToDictionary(p => p.Key, p => _interpolator.ToString(p.Value));
             string str = _interpolator.Interpolate("Hello, ({name})! I am at ({place}) and is ({age}) years old.", "({", "})", parameters);
