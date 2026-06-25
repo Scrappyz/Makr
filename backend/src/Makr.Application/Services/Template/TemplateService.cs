@@ -2,13 +2,13 @@
 using Makr.Application.Pipeline.Interpolation;
 using Makr.Application.Pipeline.PathSelection;
 using Makr.Application.Pipeline.RuleEvaluation;
-using Makr.Domain.Constants;
 using Makr.Domain.Exceptions;
 using Makr.Domain.Helpers;
 using Makr.Domain.Models;
 using Makr.Domain.Models.Template;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using Makr.Domain.Enums;
 
 namespace Makr.Application.Services.Template
 {
@@ -30,10 +30,10 @@ namespace Makr.Application.Services.Template
         public void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters, bool force)
         {
             #region Declare variables
-            string templatePath = Path.GetFullPath(Path.Combine(_templateSetting.TemplateDirectory, templateId));
-            string initPath = Path.GetFullPath(_templateSetting.TemplateInitializationDirectory);
+            string templatePath = GetTemplatePath(templateId);
+            string initPath = GetTemplateInitializationPath();
 
-            string templateJsonPath = Path.Combine(templatePath, ".makr", "template.json");
+            string templateJsonPath = GetTemplateConfigPath(templateId);
 
             if (!FilesystemUtils.Exists(templateJsonPath))
             {
@@ -103,11 +103,47 @@ namespace Makr.Application.Services.Template
             InitializeTemplate(templateId, parameters, false);
         }
 
+        public TemplateConfig? GetTemplateConfig(string templateId)
+        {
+            string configPath = GetTemplateConfigPath(templateId);
+
+            if (!FilesystemUtils.Exists(configPath))
+            {
+                return null;
+            }
+
+            string configContent = File.ReadAllText(configPath);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            TemplateConfig? config = JsonSerializer.Deserialize<TemplateConfig>(configContent, options);
+
+            return config;
+        }
+
+        public string GetTemplatePath(string templateId)
+        {
+            return Path.GetFullPath(Path.Combine(_templateSetting.TemplateDirectory, templateId));
+        }
+
+        public string GetTemplateInitializationPath()
+        {
+            return Path.GetFullPath(_templateSetting.TemplateInitializationDirectory);
+        }
+
+        public string GetTemplateConfigPath(string templateId)
+        {
+            return Path.GetFullPath(Path.Combine(_templateSetting.TemplateDirectory, templateId, ".makr", "template.json"));
+        }
+
         public bool TemplateExists(string templateId)
         {
-            string templatePath = Path.GetFullPath(Path.Combine(_templateSetting.TemplateDirectory, templateId));
-            string templateJsonPath = Path.Combine(templatePath, ".makr", "template.json");
-            return FilesystemUtils.Exists(templateJsonPath);
+            string templatePath = GetTemplatePath(templateId);
+            string templateConfigPath = GetTemplateConfigPath(templateId);
+            return FilesystemUtils.Exists(templateConfigPath);
         }
 
         public List<string> GetDuplicateParameters(List<ParameterKeyValue> parameters)

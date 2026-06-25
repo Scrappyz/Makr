@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Makr.Domain.Constants
+namespace Makr.Domain.Enums
 {
     public class ErrorCode
     {

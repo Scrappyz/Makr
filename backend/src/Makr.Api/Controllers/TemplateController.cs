@@ -1,11 +1,14 @@
 ﻿using Makr.Application.DTOs.Requests;
+using Makr.Application.DTOs.Responses;
 using Makr.Application.Interfaces;
+using Makr.Application.Mappers;
 using Makr.Application.Pipeline.Interpolation;
 using Makr.Application.Pipeline.PathSelection;
 using Makr.Application.Services.Template;
-using Makr.Domain.Constants;
+using Makr.Domain.Enums;
 using Makr.Domain.Exceptions;
 using Makr.Domain.Models;
+using Makr.Domain.Models.Template;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Makr.Api.Controllers
@@ -53,7 +56,8 @@ namespace Makr.Api.Controllers
                 throw new ApiException(StatusCodes.Status404NotFound, ErrorCode.Template.NotFound, $"Template with ID `{id}` cannot be found");
             }
 
-            return Ok("cool");
+            TemplateConfigResponse? configResponse = _templateService.GetTemplateConfig(id).ToResponse();
+            return Ok(configResponse);
         }
 
         [HttpPost("test")]

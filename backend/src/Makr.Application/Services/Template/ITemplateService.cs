@@ -12,6 +12,14 @@ namespace Makr.Application.Services.Template
 
         void InitializeTemplate(string templateId, List<ParameterKeyValue> parameters);
 
+        TemplateConfig? GetTemplateConfig(string templateId);
+
+        string GetTemplatePath(string templateId);
+
+        string GetTemplateInitializationPath();
+
+        string GetTemplateConfigPath(string templateId);
+
         bool TemplateExists(string templateId);
 
         List<string> GetDuplicateParameters(List<ParameterKeyValue> parameters);

@@ -1,4 +1,4 @@
-﻿using Makr.Domain.Constants;
+﻿using Makr.Domain.Enums;
 using Makr.Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Text.Json;
